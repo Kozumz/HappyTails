@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #3498db, #9b59b6);
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .chart-container {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction History</h1>
+        <table class="table table-bordered mt-4 text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Animal Type</th>
+                    <th>Emotion</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for animal_type, emotion, date in data %}
+                <tr>
+                    <td>{{ animal_type }}</td>
+                    <td>{{ emotion }}</td>
+                    <td>{{ date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <h2>Emotion Distribution</h2>
+            <canvas id="emotionChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Animal Type Distribution</h2>
+            <canvas id="animalChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Data for charts (replace with dynamic data if needed)
+        const emotionData = {
+            labels: ["ANGRY", "HAPPY", "RELAXED", "SAD"],
+            datasets: [{
+                label: 'Emotions',
+                data: [10, 25, 15, 5], // Replace with actual counts
+                backgroundColor: ['#e74c3c', '#2ecc71', '#3498db', '#9b59b6'],
+                borderColor: ['#c0392b', '#27ae60', '#2980b9', '#8e44ad'],
+                borderWidth: 1
+            }]
+        };
+
+        const animalData = {
+            labels: ["Perro", "Gato", "Conejo", "Pez"], // Replace with actual animal types
+            datasets: [{
+                label: 'Animals',
+                data: [20, 15, 10, 5], // Replace with actual counts
+                backgroundColor: ['#f1c40f', '#e67e22', '#1abc9c', '#34495e'],
+                borderColor: ['#f39c12', '#d35400', '#16a085', '#2c3e50'],
+                borderWidth: 1
+            }]
+        };
+
+        // Emotion Chart
+        const ctx1 = document.getElementById('emotionChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'pie',
+            data: emotionData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Emotion Distribution'
+                    }
+                }
+            }
+        });
+
+        // Animal Chart
+        const ctx2 = document.getElementById('animalChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: animalData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Animal Type Distribution'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
